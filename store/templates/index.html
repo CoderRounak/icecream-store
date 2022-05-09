@@ -1,0 +1,86 @@
+{% extends 'base.html'%} {% block content %}
+{% load cart %}
+{% load custom_filters %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="list-group">
+                <a href="/" class="list-group-item list-group-item-action">All</a>
+
+                {% for category in categories %}
+
+                <a href="/?category={{category.id}}"
+                    class="list-group-item list-group-item-action">{{category.name}}</a>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="products" class="col-lg-9">
+            <div class="row mx-auto">
+                <div class="container">
+                    <div class="row gy-5 gx-md-5 justify-content-between">
+                        {% for product in products %}
+
+                        <!-- <div class="card mx-auto mb-3" style="width: 18rem;">
+                    <img src="{{product.image.url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">{{product.description}}</p>
+                        <a href="#" class="btn btn-primary">₹{{product.price}}</a>
+                    </div>
+                </div> -->
+
+                        <div class="col-lg-4 col-md-6 text-center">
+                            <div class="card box" id="{{product.id}}">
+                                <img src="{{product.image.url}}" class="card-img-top img-fluid" alt="..." />
+                                <div class="card-body">
+                                    <h5 class="card-title">{{product.name}}</h5>
+                                    <p class="card-text">{{product.description}}</p>
+                                    <div class="container d-flex justify-content-around align-items-center">
+                                        
+                                        {% if product|is_in_cart:request.session.cart %}
+                                        {% else %}
+                                        <form action="/#{{product.id}}" method="POST">
+                                            {% csrf_token %}
+                                            <input hidden type="text" name="product" value="{{product.id}}">
+                                            <button class="fancy" type="submit" href="#">
+                                                <span class="top-key"></span>
+                                                <span class="text">{{product.price|currency}}</span>
+                                                <span class="bottom-key-1"></span>
+                                                <span class="bottom-key-2"></span>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if product|is_in_cart:request.session.cart %}
+                                <div class="card-footer row g-0">
+                                    <form action="/#{{product.id}}" method="post" class="col-2">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name="product" value="{{product.id}}">
+                                        <input hidden type="text" name="remove" value="True">
+                                        <input type="submit" value=" - " class="btn btn-block btn-dark">
+                                    </form>
+                                    
+                                    <div class="text-center col">{{product|cart_quantity:request.session.cart}} X ₹{{product.price}}</div>
+
+                                    <form action="/#{{product.id}}" method="post" class="col-2">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name="product" value="{{product.id}}">
+                                        <input type="submit" value=" + " class="btn btn-block btn-dark">
+                                    </form>
+                                   
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load cart %}
+{% load custom_filters %}
+<div class="container">
+
+    <div class="cart-box border rounded p-4 m-4">
+        <p class="display-4 px-4 mx-4">Your Orders</p>
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="hide_on_phone">S.No.</th>
+                    <th class="hide_on_phone">Image</th>
+                    <th>Item</th>
+                    <th class="hide_on_phone">Price</th>
+                    <th>Date</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="hide_on_phone">{{forloop.counter}}</td>
+                    <td class="hide_on_phone"><img style="height: 30px;" class="rounded-circle" src="{{order.product.image.url}}" alt=""></td>
+                    <td>{{order.product.name}}</td>
+                    <td class="hide_on_phone">{{order.price|currency}}</td>
+                    <td>{{order.date}}</td>
+                    <td>{{order.quantity}}</td>
+                    <td>{{order.quantity|multiply:order.price|currency}}</td>
+                    {% if order.status %}
+                    <td><span class="badge badge-pill alert-success">Completed</span></td>
+                    {% else %}
+                    <td><span class="badge badge-pill alert-warning">Pending</span></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        
+    </div>
+
+</div>
+
+
+
+{% endblock %}
