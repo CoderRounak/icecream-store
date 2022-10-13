@@ -18,5 +18,3 @@ From there, he can update the items in the menu(when he want to add new icecream
 The owner can check customer details.
 The owner can manage the orders of the customers: After delivering a specific order he can mark that order's status as "completed" from "pending".
 
-
-DEPLOYED AT AWS : http://13.233.190.232/
