@@ -3,5 +3,5 @@
 pip install -r requirements.txt
 
 # migration
-py manage.py migrate
+python manage.py migrate
 
